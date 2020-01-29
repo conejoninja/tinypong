@@ -1,4 +1,4 @@
-# GopherSays
+# Tiny-PONG
 
 ## License
 
