@@ -49,6 +49,9 @@ func main() {
 	var err error
 	// SPI for the hub75
 	machine.SPI0.Configure(machine.SPIConfig{
+		SCK:       machine.SPI0_SCK_PIN,
+		MOSI:      machine.SPI0_MOSI_PIN,
+		MISO:      machine.SPI0_MISO_PIN,
 		Frequency: 8000000,
 		Mode:      0})
 	// I2C for the RTC DS3231
@@ -126,7 +129,7 @@ func main() {
 						game.ball.y += game.ball.vy
 
 						for k = 0; k < 2; k++ {
-							if (k == 1 && game.ball.x >= 60) || (k == 0 && game.ball.x <= 2) {
+							if (k == 1 && game.ball.x >= 61) || (k == 0 && game.ball.x <= 1) {
 								if int16(game.ball.y) < game.players[k].y-1 || int16(game.ball.y) > game.players[k].y+7 {
 									game.newRound((k + 1) % 2)
 									gameStopped = 0
@@ -178,7 +181,7 @@ func main() {
 			game.display.ClearDisplay()
 			game.status = IDLE
 			then = time.Now()
-			if game.players[0].score>=50 {
+			if game.players[0].score >= 50 {
 				tinyfont.WriteLine(&game.display, &tinyfont.TomThumb, 10, 12, []byte("PLAYER 1"), game.colors[2])
 			} else {
 				tinyfont.WriteLine(&game.display, &tinyfont.TomThumb, 10, 12, []byte("PLAYER 2"), game.colors[2])
@@ -402,11 +405,11 @@ func main() {
 func (g *Game) newRound(winner uint8) {
 	g.ball.x = float32(31)
 	g.ball.y = rand.Float32()*16 + 8
-	g.ball.vx = float32(1)
+	g.ball.vy = rand.Float32()*1 - 0.5
 	if winner == 0 {
-		g.ball.vy = 0.5
+		g.ball.vx = float32(-1)
 	} else {
-		g.ball.vy = -0.5
+		g.ball.vx = float32(1)
 	}
 	g.players[winner].score++
 	if g.players[winner].score > 50 {
