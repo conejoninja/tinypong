@@ -45,6 +45,6 @@ DS3231 connections
 | DS3231 | Arduino Nano33 IoT|
 |:-:|:-:|
 | GND | G |
-| VCC | V |
+| VCC | 5V from power source (not arduino) |
 | SDA | A4/SDA |
 | SCL | A5/SCL |
